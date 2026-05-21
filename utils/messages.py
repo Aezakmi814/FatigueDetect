@@ -1,0 +1,12 @@
+"""
+用户提示文案统一管理
+"""
+MSG_NO_IMAGE = "请先选择图片"
+MSG_NO_FACE = "未检测到人脸，请更换图片"
+MSG_LOAD_FAIL = "模型加载失败，请检查模型文件"
+MSG_DETECT_FAIL = "检测失败"
+MSG_LOADING = "正在加载模型，请稍候..."
+MSG_DETECTING = "正在检测..."
+MSG_WAITING = "等待检测"
+MSG_PLEASE_SELECT = "请选择图片进行检测"
+MSG_RESULT_PLACEHOLDER = "检测结果将显示在此处"

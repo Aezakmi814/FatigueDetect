@@ -1,0 +1,11 @@
+# ============================================
+# 驾驶员疲劳检测系统 - 依赖清单
+# 安装命令（国内推荐清华镜像）：
+#   pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+# ============================================
+
+PyQt5>=5.15.0
+opencv-python>=4.8.0
+numpy>=1.24.0
+ultralytics>=8.0.0
+mediapipe>=0.10.0
