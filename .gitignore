@@ -1,0 +1,26 @@
+# Python 缓存
+__pycache__/
+*.pyc
+*.pyo
+
+# 虚拟环境
+venv/
+.venv/
+env/
+
+# Python 安装包
+python-*.exe
+
+# 离线依赖包
+packages/
+
+# 压缩包
+*.rar
+*.zip
+
+# 训练结果
+runs/
+
+# 系统文件
+Thumbs.db
+.DS_Store

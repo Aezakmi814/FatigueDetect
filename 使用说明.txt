@@ -1,0 +1,38 @@
+﻿如果电脑没装 Python
+
+   双击 "一键安装.bat"
+
+
+
+ 如果你有 Python
+   在项目文件夹右键打开 cmd （选择“在终端中打开”）
+   输入：
+
+       pip install -r requirements.txt
+
+然后回车
+
+运行项目两种方法：
+1、双击main.pyw
+2、在项目文件夹右键 cmd然后复制粘贴回车   python main.pyw
+
+
+
+功能说明
+
+实时检测：闭眼、打哈欠
+显示参数：EFV（眼裂宽比）、MFV（嘴高比）、头部姿态
+疲劳判断：检测到闭眼或打哈欠
+
+ 文件说明
+
+  main.pyw                 → 主程序（双击运行）
+  requirements.txt         → 依赖清单
+  一键安装.bat             → 离线一键部署
+  packages/                → 离线依赖包
+  eyesyawn.pt              → 训练好的检测模型
+  models/face_landmarker.task → 人脸关键点模型
+  core/                    → 核心检测代码
+  ui/                      → 界面代码
+  config/                  → 配置文件
+  utils/                   → 工具函数
