@@ -1,0 +1,131 @@
+# ============================================================
+# FatigueDetect 自动构建与发布工作流
+# 构建方式: PyInstaller onedir 模式 → 压缩目录 → Release
+#
+# 触发方式:
+#   - 推送 tag v* → 完整构建 + 发布 Release
+#   - 推送 main → 仅 lint 检查
+#   - PR → 仅 lint 检查
+# ============================================================
+name: Build & Release
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  # === 阶段 1: 代码质量 ===
+  lint:
+    name: Lint Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install lint tools
+        run: pip install ruff
+      - name: Run ruff
+        run: ruff check .
+
+  # === 阶段 2: 构建 (仅 tag) ===
+  build:
+    name: Build Windows Package
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [lint]
+    runs-on: windows-latest
+    timeout-minutes: 60
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~\AppData\Local\pip\Cache
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install pyinstaller
+
+      - name: Build with PyInstaller (onedir)
+        run: pyinstaller fatigue_detect.spec
+
+      - name: Verify build
+        run: |
+          if (Test-Path "dist/FatigueDetect/FatigueDetect.exe") {
+              $size = (Get-Item "dist/FatigueDetect/FatigueDetect.exe").Length
+              Write-Host "✅ Build OK! EXE: $([math]::Round($size/1MB, 2)) MB"
+              $total = (Get-ChildItem "dist/FatigueDetect" -Recurse -File | Measure-Object -Property Length -Sum).Sum
+              Write-Host "📦 Total package: $([math]::Round($total/1GB, 2)) GB"
+          } else {
+              Write-Error "❌ Build failed!"
+              exit 1
+          }
+
+      - name: Compress package (7z)
+        run: |
+          # 使用 PowerShell 的 Compress-Archive (内置，无需额外安装)
+          Compress-Archive -Path dist/FatigueDetect/* -DestinationPath FatigueDetect-${{ github.ref_name }}-Windows.zip
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: FatigueDetect-Windows
+          path: FatigueDetect-*.zip
+          retention-days: 30
+
+  # === 阶段 3: 发布 Release ===
+  release:
+    name: Create GitHub Release
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [build]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: FatigueDetect-Windows
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: FatigueDetect ${{ github.ref_name }}
+          tag_name: ${{ github.ref_name }}
+          files: FatigueDetect-*.zip
+          generate_release_notes: true
+          fail_on_unmatched_files: true
+          body: |
+            ## FatigueDetect ${{ github.ref_name }}
+
+            ### 📥 下载
+            - `FatigueDetect-${{ github.ref_name }}-Windows.zip` — Windows 可执行包
+
+            ### 🚀 使用方法
+            1. 下载并解压 `FatigueDetect-*-Windows.zip`
+            2. 进入 `FatigueDetect/` 文件夹
+            3. 双击 `FatigueDetect.exe` 运行
+
+            ### ⚠️ 注意
+            - Windows Defender 可能误报，请添加排除项或点击"仍然运行"
+            - 首次启动需加载模型，可能稍慢

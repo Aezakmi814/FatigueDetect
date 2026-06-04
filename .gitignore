@@ -24,3 +24,14 @@ runs/
 # 系统文件
 Thumbs.db
 .DS_Store
+
+# ========== 打包构建产物 ==========
+dist/
+build/
+*.exe
+
+# ========== 日志/临时 ==========
+git_log.txt
+样本图片/
+Pyqt5/
+Pyqt5.rar
