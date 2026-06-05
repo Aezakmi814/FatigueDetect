@@ -10,7 +10,7 @@ _PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
 @dataclass
 class ModelConfig:
-    yolo_path: str = os.path.join(_PROJECT_ROOT, "eyesyawn.pt")
+    yolo_path: str = os.path.join(_PROJECT_ROOT, "eyesyawn.onnx")
     conf_threshold: float = 0.1
     class_names: dict = field(default_factory=lambda: {0: "closed_eye", 1: "open_eye", 2: "yawning"})
 

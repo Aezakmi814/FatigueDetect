@@ -35,3 +35,27 @@ git_log.txt
 样本图片/
 Pyqt5/
 Pyqt5.rar
+
+# ========== IDE ==========
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ========== Python 包信息 ==========
+*.egg-info/
+*.egg/
+
+
+# ========== 测试/覆盖率 ==========
+.coverage
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+
+# ========== 日志 ==========
+*.log
+
+# ========== 大文件 (Git LFS) ==========
+# *.pt
+# *.task

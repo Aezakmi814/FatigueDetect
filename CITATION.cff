@@ -1,0 +1,8 @@
+cff-version: 1.2.0
+title: "FatigueDetect - 驾驶员疲劳检测系统"
+message: "如果本项目对你的研究有帮助，请引用"
+type: software
+authors:
+  - name: "Aezakmi814"
+repository-code: "https://github.com/Aezakmi814/FatigueDetect"
+license: GPL-3.0

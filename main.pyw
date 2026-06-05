@@ -54,7 +54,6 @@ def main():
     # === 第二步：检查可选依赖（仅警告，不阻塞） ===
     optional_checks = {
         "cv2 (opencv-python)": "opencv-python>=4.8.0",
-        "ultralytics": "ultralytics>=8.0.0",
         "mediapipe": "mediapipe>=0.10.0",
         "numpy": "numpy>=1.24.0",
     }

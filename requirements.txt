@@ -1,11 +1,18 @@
 # ============================================
-# ��ʻԱƣ�ͼ��ϵͳ - �����嵥
-# ��װ��������Ƽ��廪���񣩣�
+# 驾驶员疲劳检测系统 - 依赖清单
+# 安装命令:
 #   pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 # ============================================
-
+# 核心依赖（必须安装）
 PyQt5>=5.15.0
 opencv-python>=4.8.0
 numpy>=1.24.0
-ultralytics>=8.0.0
 mediapipe>=0.10.0
+onnxruntime-gpu>=1.20.0
+
+# 有 NVIDIA 显卡的用户请替换上方为:
+#   onnxruntime>=1.20.0        # CPU 版本（通用）
+# 或:
+#   onnxruntime-directml>=1.20.0  # Intel/AMD 显卡
+#
+# 程序会自动检测和切换，无需手动修改任何配置文件

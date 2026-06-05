@@ -178,9 +178,11 @@ class MainWindow(QMainWindow):
         if not file_path:
             return
 
-        self.current_image = cv2.imread(file_path)
+        # 使用 imdecode + np.fromfile 解决中文路径问题
+        img_bytes = np.fromfile(file_path, dtype=np.uint8)
+        self.current_image = cv2.imdecode(img_bytes, cv2.IMREAD_COLOR)
         if self.current_image is None:
-            QMessageBox.warning(self, "错误", MSG_LOAD_FAIL.replace("模型", "图片"))
+            QMessageBox.warning(self, "错误", f"无法加载图片:\n{file_path}\n\n请检查文件是否损坏或格式不支持")
             return
 
         # 显示原图
@@ -209,7 +211,7 @@ class MainWindow(QMainWindow):
                 QApplication.processEvents()
                 self.detector = FatigueDetector()
             except Exception as e:
-                QMessageBox.critical(self, "错误", f"{MSG_LOAD_FAIL}: {str(e)}\n\n请确保:\n1. 已安装 ultralytics 和 mediapipe\n2. eyesyawn.pt 在项目根目录下\n3. models/face_landmarker.task 在 models 目录下")
+                QMessageBox.critical(self, "错误", f"{MSG_LOAD_FAIL}: {str(e)}\n\n请确保:\n1. eyesyawn.onnx 或 eyesyawn.pt 在项目根目录下\n2. models/face_landmarker.task 在 models 目录下")
                 return
 
         try:

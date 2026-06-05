@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 讨论区
+    url: https://github.com/Aezakmi814/FatigueDetect/discussions
+    about: 问题讨论和交流请前往 Discussions
+  - name: 📖 使用说明
+    url: https://github.com/Aezakmi814/FatigueDetect#使用说明
+    about: 查看使用说明和常见问题
